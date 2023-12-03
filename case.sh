@@ -1,14 +1,17 @@
 #!/bin/bash
 
+# Set the path to the scoring script
 scoring_script="./scoring.sh"
-# Define text colors
+
+# Define text colors for better output visualization
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
-NC='\033[0m'
+NC='\033[0m'  # Reset text color
 
+# Function to display a countdown
 countdown() {
     seconds=$1
 
@@ -24,10 +27,12 @@ countdown() {
     echo ""
 }
 
+# Function to view the dashboard
 view_dashboard() {
     ./view_dashboard.sh
 }
 
+# Function to view statistics
 view_stats() {
     ./stat.sh
 }
@@ -35,9 +40,9 @@ view_stats() {
 # Set the countdown duration
 duration=5
 
-
+# Infinite loop for the main menu
 while true; do
-    echo -e "\033c"
+    echo -e "\033c"  # Clear the screen
     echo -e "${YELLOW}Welcome to the Scoring Engine. What would you like to do?${NC}"
     echo -e "${BLUE}1.${NC} ${GREEN}IP Menu${NC}"
     echo -e "${BLUE}2.${NC} ${GREEN}Start scoring${NC}"
@@ -53,8 +58,8 @@ while true; do
         1)
             # IP Menu
 
-            echo -e "\033c"
-            echo -e "Please select what you would like do"
+            echo -e "\033c"  # Clear the screen
+            echo -e "Please select what you would like to do"
             echo -e "${GREEN}1. Add an IP to the list${NC}"
             echo -e "${RED}2. Remove an IP from the list${NC}"
             echo -e "(Press enter to exit)"
@@ -63,7 +68,8 @@ while true; do
 
             case $ip_choice in
                 1)
-                    echo -e "\033c"
+                    # Add an IP to the list
+                    echo -e "\033c"  # Clear the screen
                     if [ -s ip_addr_list.txt ]; then
                         echo "Current IPs in ip_addr_list.txt:"
                         cat -n ip_addr_list.txt
@@ -82,7 +88,8 @@ while true; do
                     fi
                     ;;
                 2)
-                    echo -e "\033c"
+                    # Remove an IP from the list
+                    echo -e "\033c"  # Clear the screen
                     if [ -s ip_addr_list.txt ]; then
                         echo "IP addresses in ip_addr_list.txt:"
                         cat -n ip_addr_list.txt
@@ -100,14 +107,14 @@ while true; do
                     fi
                     ;;
                 *)
-                    echo "Invalid choice. Please enter 1, 2"
+                    echo "Invalid choice. Please enter 1 or 2."
                     ;;
             esac
             ;;
         2)
             # Start Scoring
-            $scoring_script &
-            pid=$(echo $!)
+            $scoring_script &  # Run the scoring script in the background
+            pid=$(echo $!)  # Get the process ID of the scoring script
             echo "Started Scoring script with PID: $pid"
             sleep 3
             ;;
@@ -117,13 +124,13 @@ while true; do
             ;;
         4)
             # Stop Scoring
-            tempPID=$(ps aux | grep ./scoring.sh | head -n 1 | awk '{print $2}')
-            kill "$tempPID"
+            tempPID=$(ps aux | grep ./scoring.sh | head -n 1 | awk '{print $2}')  # Get the process ID of the scoring script
+            kill "$tempPID"  # Kill the scoring script
             sleep 3
             ;;
         5)
             # Reset
-            echo -e "\033c"
+            echo -e "\033c"  # Clear the screen
             echo -e "Please select what you would like to reset."
             echo -e "${RED}1. Reset Current Scores"
             echo -e "2. Reset IP Address List Scores"
@@ -134,16 +141,19 @@ while true; do
 
             case $reset_choice in
                 1)
+                    # Reset Current Scores
                     echo -e "Reseting Current Scores."
                     countdown $duration
                     rm current_scores.txt
                     ;;
                 2)
+                    # Reset IP Address List Scores
                     echo -e "Reseting IP Address List."
                     countdown $duration
                     rm ip_addr_list.txt
                     ;;
                 3)
+                    # Reset both Current Scores and IP Address List
                     echo -e "Reseting both Current Scores and IP Address List."
                     countdown $duration
                     rm current_scores.txt
@@ -154,10 +164,9 @@ while true; do
                     ;;
             esac
             ;;
-
         6)
             # View Stats
-            echo -e "\033c"
+            echo -e "\033c"  # Clear the screen
             view_stats
             read -p "Press enter to close" close
             ;;
@@ -165,11 +174,11 @@ while true; do
             # Exit
             echo "Exiting the script. Goodbye!"
             sleep 1
-            echo -e "\033c"
+            echo -e "\033c"  # Clear the screen
             exit 0
             ;;
         *)
-            echo "Invalid choice. Please enter a number between 1 and 6."
+            echo "Invalid choice. Please enter a number between 1 and 7."
             ;;
     esac
 done
