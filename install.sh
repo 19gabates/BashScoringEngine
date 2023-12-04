@@ -20,6 +20,7 @@ touch current_scores.txt
 chmod +x scoring.sh
 chmod +x view_dashboard.sh
 chmod +x stat.sh
+chmod +x case.sh
 
 # Display completion message
 echo "Installation completed successfully."
